@@ -13,10 +13,13 @@ files = [f for f in listdir(SpotlightPath) if isfile(join(SpotlightPath, f))]
 if not os.path.exists('Spotlight-Images'):
     os.makedirs('Spotlight-Images')
 
-
 for file_name in files:
     full_file_name = os.path.join(SpotlightPath, file_name)
     if os.path.isfile(full_file_name):
-        new_file = shutil.copy(full_file_name, dest_directory)
-        os.rename(new_file, new_file + '.' + filename_suffix)
+        # print(os.path.join(dest_directory, file_name + '.' + filename_suffix))
+        if not os.path.isfile(os.path.join(dest_directory, file_name + '.' + filename_suffix)):
+            new_file = shutil.copy(full_file_name, dest_directory)
+            os.rename(new_file, new_file + '.' + filename_suffix)
+            print('Image Found -> ' + os.path.join(file_name + '.' + filename_suffix))
 
+print('All Images Can Be Found In -> ' + dest_directory)
