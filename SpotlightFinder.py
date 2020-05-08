@@ -3,6 +3,7 @@ import os
 import shutil
 from os import listdir
 from os.path import isfile, join
+import get_image_size
 
 filename_suffix = 'jpg'
 current_app_dir = os.path.dirname(os.path.realpath(__file__))
@@ -24,3 +25,14 @@ for file_name in files:
             print('Image Found -> ' + os.path.join(file_name + '.' + filename_suffix))
 
 print('All Images Can Be Found In -> ' + dest_directory)
+
+images = [f for f in listdir(dest_directory) if isfile(join(dest_directory, f))]
+
+for image in images:
+    full_image_name = os.path.join(dest_directory, image)
+    try:
+        width, height = get_image_size.get_image_size(full_image_name)
+        if not width >= 1080:
+            os.remove(full_image_name)
+    except get_image_size.UnknownImageFormat:
+        width, height = -1, -1
